@@ -1,0 +1,26 @@
+name: On Issue created
+
+on:
+    issues:
+        types: [opened]
+permissions:
+    issues: write
+    contents: read
+
+jobs:
+  handle-new-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo some context
+        run: |
+          echo "Repo: ${{ github.repository }}"
+          echo "Issue number: ${{ github.event.issue.number }}"
+          echo "Title: ${{ github.event.issue.title }}"
+          echo "Opened by: ${{ github.event.sender.login }}"
+
+      - name: Add a label
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: |
+            triage
